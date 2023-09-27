@@ -1,0 +1,7 @@
+str='hello world'
+print(str)
+print(str[0:-1]) #输出第一个到倒数第二个的所有字符
+input("this is a simple information")
+x=input("the value of x:1")
+print(x)
+print(type(x))
