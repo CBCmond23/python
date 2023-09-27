@@ -1,0 +1,34 @@
+import pandas as pd
+import statsmodels.api as sm
+from scipy.stats import norm
+from patsy import dmatrices
+import matplotlib.pyplot as plt
+import csv
+import numpy as np
+df = pd.read_csv("1122.csv")
+print(df.dtypes)
+print(df.head())
+vars = ['PM2_5(ug/m3)', 'Ozone(ppbv)', 'Temperature(K)']
+df = df[vars]
+print(df)
+X = sm.add_constant(df[['Temperature(K)', 'Ozone(ppbv)']])
+y = df['PM2_5(ug/m3)']
+
+# Create a model and fit it
+model = sm.OLS(y, X).fit()
+
+# Display the summary
+print(model.summary())
+print (sm.stats.linear_rainbow(model))
+fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+
+# CCPR plot for Temperature
+sm.graphics.plot_ccpr(model, 'Temperature(K)', ax=ax[0])
+ax[0].set_title('CCPR plot of PM2_5(ug/m3) vs Temperature(K)')
+
+# CCPR plot for Ozone
+sm.graphics.plot_ccpr(model, 'Ozone(ppbv)', ax=ax[1])
+ax[1].set_title('CCPR plot of PM2_5(ug/m3) vs Ozone(ppbv)')
+
+plt.tight_layout()
+plt.show()
