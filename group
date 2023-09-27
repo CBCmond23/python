@@ -1,0 +1,28 @@
+import pandas as pd
+
+# 创建示例数据
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],
+    'Age': [25, 30, 35, 40, 45],
+    'Gender': ['Female', 'Male', 'Male', 'Male', 'Female']
+}
+
+df = pd.DataFrame(data)
+
+# 使用groupby对Gender进行分类
+grouped = df.groupby('Gender')
+for name, group in grouped:
+    print(name)
+    print(group)
+
+
+
+
+
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+data = sns.load_dataset("titanic")
+sns.countplot(x="class", data=data)
+plt.show()
