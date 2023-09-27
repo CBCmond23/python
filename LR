@@ -1,0 +1,141 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# 创建一些示例数据
+X = np.random.rand(100, 1) * 10  # 特征
+Y = 2.5 * X + np.random.randn(100, 1) * 2  # 响应变量，其中有一些噪音
+
+# 将数据分为训练集和测试集
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# 创建线性回归模型并进行拟合
+model = LinearRegression()
+model.fit(X_train, Y_train)
+
+# 预测测试集
+Y_pred = model.predict(X_test)
+
+# 计算均方误差 (MSE)
+mse = mean_squared_error(Y_test, Y_pred)
+print(f"Mean Squared Error: {mse}")
+
+# 输出模型的系数
+print(f"Coefficient: {model.coef_}")
+print(f"Intercept: {model.intercept_}")
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# 创建一些示例数据
+# 例如：球员的训练小时数
+X = np.random.rand(100, 1) * 10
+# 球员基于他的训练小时数的得分，这里添加一些随机噪音模拟现实情况
+Y = 5 * X + 7 + np.random.randn(100, 1) * 5
+
+# 将数据分为训练集和测试集
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# 创建线性回归模型并进行拟合
+model = LinearRegression()
+model.fit(X_train, Y_train)
+
+# 预测测试集
+Y_pred = model.predict(X_test)
+
+# 计算均方误差 (MSE)
+mse = mean_squared_error(Y_test, Y_pred)
+print(f"Mean Squared Error: {mse}")
+
+print(f"Coefficient: {model.coef_}")
+print(f"Intercept: {model.intercept_}")
+
+plt.scatter(X_train, Y_train, color='blue', label="Training Data")
+plt.scatter(X_test, Y_test, color='red', label="Testing Data")
+plt.plot(X_test, Y_pred, color='black', label="Regression Line")
+plt.xlabel("Training Hours")
+plt.ylabel("Scores")
+plt.title("Simple Linear Regression")
+plt.legend()
+plt.show()
+
+
+
+
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# 生成模拟数据
+np.random.seed(0)
+X_train_hours = np.random.rand(100, 1) * 10
+X_train_age = np.random.rand(100, 1) * 5 + 20
+Y_train = 5 * X_train_hours + 3 * X_train_age + 7 + np.random.randn(100, 1) * 5
+
+X = np.hstack((X_train_hours, X_train_age))  # 将特征组合在一起
+
+# 将数据分为训练集和测试集
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y_train, test_size=0.2, random_state=42)
+
+# 创建线性回归模型并进行拟合
+model = LinearRegression()
+model.fit(X_train, Y_train)
+
+# 预测测试集
+Y_pred = model.predict(X_test)
+
+# 计算均方误差 (MSE)
+mse = mean_squared_error(Y_test, Y_pred)
+print(f"Mean Squared Error: {mse}")
+
+# 输出模型的系数
+print(f"Coefficients: {model.coef_}")
+print(f"Intercept: {model.intercept_}")
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# 生成模拟数据
+np.random.seed(0)
+X_train_hours = np.random.rand(100, 1) * 10
+X_train_age = np.random.rand(100, 1) * 5 + 20
+Y_train = 5 * X_train_hours + 3 * X_train_age + 7 + np.random.randn(100, 1) * 5
+
+X = np.hstack((X_train_hours, X_train_age))
+
+# 将数据分为训练集和测试集
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y_train, test_size=0.2, random_state=42)
+
+# 创建线性回归模型并进行拟合
+model = LinearRegression()
+model.fit(X_train, Y_train)
+
+# 为绘图创建网格数据
+x0_range = np.linspace(X[:, 0].min(), X[:, 0].max(), 10)
+x1_range = np.linspace(X[:, 1].min(), X[:, 1].max(), 10)
+x0, x1 = np.meshgrid(x0_range, x1_range)
+X_grid = np.c_[x0.ravel(), x1.ravel()]
+Y_grid = model.predict(X_grid).reshape(x0.shape)
+
+# 绘制3D散点图并添加拟合平面
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(X_train[:, 0], X_train[:, 1], Y_train, c='b', marker='o', label="Training Data")
+ax.scatter(X_test[:, 0], X_test[:, 1], Y_test, c='r', marker='^', label="Test Data")
+ax.plot_surface(x0, x1, Y_grid, color='C2', alpha=0.3, label="Predicted Plane")
+ax.set_xlabel('Training Hours')
+ax.set_ylabel('Age')
+ax.set_zlabel('Score')
+ax.legend()
+plt.title("3D Scatter Plot with Fitted Plane")
+plt.show()
