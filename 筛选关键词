@@ -1,0 +1,25 @@
+import pandas as pd
+
+# 读取CSV文件
+df = pd.read_csv('Stroke1.csv')
+
+# 自定义函数来检索每一行中的某个字
+def count_and_filter(row):
+    keyword = '梗'
+    return keyword in row['diaology']
+
+# 使用apply方法应用自定义函数
+df['包含关键字'] = df.apply(count_and_filter, axis=1)
+
+# 统计包含特定关键字的行的数量
+count_of_rows_with_keyword = df['包含关键字'].sum()
+
+# 输出结果
+print(f"包含关键字的行数：{count_of_rows_with_keyword}")
+
+# 筛选包含特定关键字的行
+filtered_data = df[df['包含关键字']]
+
+# 输出或保存结果
+print(filtered_data)
+filtered_data.to_csv('filtered_output.csv', index=False)
