@@ -1,0 +1,28 @@
+import pandas as pd
+import requests
+
+# 读取CSV文件
+df = pd.read_csv('area.csv')
+
+# 循环遍历每个地址并使用百度地图API转换为坐标
+for address in df['area']:
+    # 构建百度地图API请求
+    base_url = 'http://api.map.baidu.com/geocoding/v3/?'
+    params = {
+        'address': address,
+        'ak': '......',  # 替换为您的百度地图API密钥
+        'output': 'json'
+    }
+
+    # 发送API请求
+    response = requests.get(base_url, params=params)
+    data = response.json()
+
+    # 提取坐标
+    if data['status'] == 0:
+        location = data['result']['location']
+        lat = location['lat']
+        lng = location['lng']
+        print(f"area: {address}, 纬度: {lat}, 经度: {lng}")
+    else:
+        print(f"area: {address}, 无法找到坐标")
