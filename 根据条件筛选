@@ -1,0 +1,26 @@
+import pandas as pd
+
+# 读取CSV文件
+input_file = "filtered_output.csv"  # 将文件名替换为你的CSV文件名
+
+# 读取CSV文件
+df = pd.read_csv(input_file, encoding="utf-8")  # 指定编码以支持中文字符集，根据实际需要更改编码
+
+# 替换"Time_Column"为包含时间信息的列的名称，"Location_Column"为包含地区信息的列的名称
+# "Age_Column"为包含年龄信息的列的名称
+time_column = "time"
+location_column = "area"
+age_column = "year"
+
+# 使用布尔索引筛选出年龄大于等于60岁的行
+elderly_df = df[df[age_column] >=60]
+
+# 使用groupby操作按时间和地区分组，然后统计每组的年龄大于等于60岁的数量
+grouped = elderly_df.groupby([time_column, location_column]).size().reset_index(name='Elderly_Count')
+
+# 打印每个时间和地区中年龄大于等于60岁的统计
+for index, row in grouped.iterrows():
+    time = row[time_column]
+    location = row[location_column]
+    elderly_count = row['Elderly_Count']
+    print(f"时间: {time}, 地区: {location}, 年龄大于等于60岁的数量: {elderly_count}")
