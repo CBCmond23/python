@@ -1,0 +1,16 @@
+import pandas as pd
+
+# 读取包含经纬度的CSV文件
+latlong_file = "arealatlong.csv"  # 替换为包含经纬度的CSV文件名
+latlong_df = pd.read_csv(latlong_file)
+
+# 读取包含地区和其他信息的CSV文件
+data_file = "dan.csv"  # 替换为包含地区和其他信息的CSV文件名
+data_df = pd.read_csv(data_file)
+
+# 合并两个DataFrame基于地区列
+merged_df = pd.merge(data_df, latlong_df, on="area", how="left")  # 假设“地区”是连接的列
+
+# 将合并后的DataFrame保存到新的CSV文件
+output_file = "merged_dan.csv"  # 新的CSV文件名
+merged_df.to_csv(output_file, index=False)
