@@ -1,0 +1,55 @@
+import pandas as pd
+import numpy as np
+from collections import Counter
+input_file = "filtered_output.csv"  # 将文件名替换为你的CSV文件名
+output_file = "output1.csv"  # 新文件的文件名
+
+df = pd.read_csv(input_file, encoding="utf-8")  # 指定编码以支持中文字符集，根据实际需要更改编码
+# 替换"Column_Name"为你想要分析的列的名称
+column_name = "area"
+
+# 获取指定列的所有关键词
+keywords = df[column_name].str.split().explode()
+
+# 使用Counter类计算每个关键词的出现次数
+keyword_counts = Counter(keywords)
+
+# 打印每个关键词及其出现次数
+for keyword, count in keyword_counts.items():
+    print(f"关键词: {keyword}, 出现次数: {count}")
+
+
+
+date_column = "time"
+location_column = "area"
+
+# 将日期列的数据转换为日期时间对象
+df[date_column] = pd.to_datetime(df[date_column])
+
+# 创建一个新的列，将日期和地区信息组合在一起
+df['Date_Location'] = df[date_column].dt.strftime('%Y-%m-%d') + '_' + df[location_column]
+
+# 使用Counter类统计同一天相同地区的数量
+date_location_counts = Counter(df['Date_Location'])
+
+# 打印每天相同地区的统计
+for date_location, count in date_location_counts.items():
+    date, location = date_location.split('_')
+    print(f"日期: {date}, 地区: {location}, 统计数量: {count}")
+
+
+
+location_column = "area"
+gender_column = "gender"
+
+# 使用布尔索引筛选出性别为女的行
+male_df = df[df[gender_column] == "女"]
+
+# 使用groupby操作按地区分组，然后统计每组的数量
+grouped = male_df.groupby(location_column).size().reset_index(name='Female_Count')
+
+# 打印每个地区中女性的统计
+for index, row in grouped.iterrows():
+    location = row[location_column]
+    male_count = row['Female_Count']
+    print(f"地区: {location}, 女性数量: {male_count}")
